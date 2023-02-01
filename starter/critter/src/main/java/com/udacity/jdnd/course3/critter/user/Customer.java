@@ -1,38 +1,38 @@
 package com.udacity.jdnd.course3.critter.user;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Represents the form that customer request and response data takes. Does not map
  * to the database directly.
  */
-
-public class CustomerDTO {
+@Entity
+@Table(name = "CUSTOMER")
+public class Customer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
     private String phoneNumber;
     private String notes;
+    @ElementCollection
     private List<Long> petIds;
 
-    public CustomerDTO() {
+    public Customer() {
     }
-
-    public CustomerDTO(long id, String name, String phoneNumber, String notes, List<Long> petIds) {
-        this.id = id;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.petIds = petIds;
-        this.notes = notes;
+    public Customer( String name, String phoneNumber, String notes, List<Long> petIds) {
+         this.name = name;
+         this.phoneNumber = phoneNumber;
+         this.petIds = petIds;
+         this.notes = notes;
     }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -63,6 +63,17 @@ public class CustomerDTO {
     }
 
     public void setPetIds(List<Long> petIds) {
-        this.petIds = petIds;
+        this.petIds = new ArrayList<>(petIds);
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", notes='" + notes + '\'' +
+                ", petIds=" + petIds +
+                '}';
     }
 }

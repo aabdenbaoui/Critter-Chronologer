@@ -9,21 +9,29 @@ import java.util.Set;
  * Represents the form that employee request and response data takes. Does not map
  * to the database directly.
  */
-public class EmployeeDTO {
-
+@Entity
+@Table(name = "EMPLOYEE")
+public class Employee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
-    private Set<EmployeeSkill> skills = new HashSet<>();
-
+    //    @Transient
+    @Column
+    @Enumerated
+    @ElementCollection(targetClass = EmployeeSkill.class)
+    private Set<EmployeeSkill> skills;
+    @Column
+    @Enumerated
+    @ElementCollection(targetClass = DayOfWeek.class)
     private Set<DayOfWeek> daysAvailable;
 
-    public EmployeeDTO() {
+    public Employee() {
     }
 
-    public EmployeeDTO(long id, String name, Set<EmployeeSkill> skills, Set<DayOfWeek> daysAvailable) {
-        this.id = id;
+    public Employee(String name, Set<EmployeeSkill> skills, Set<DayOfWeek> daysAvailable) {
         this.name = name;
-        this.skills = skills;
+        this.skills = skills ;
         this.daysAvailable = daysAvailable;
     }
 
@@ -31,9 +39,6 @@ public class EmployeeDTO {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -48,7 +53,7 @@ public class EmployeeDTO {
     }
 
     public void setSkills(Set<EmployeeSkill> skills) {
-        this.skills = skills;
+        this.skills = new HashSet<>(skills);
     }
 
     public Set<DayOfWeek> getDaysAvailable() {
@@ -56,6 +61,6 @@ public class EmployeeDTO {
     }
 
     public void setDaysAvailable(Set<DayOfWeek> daysAvailable) {
-        this.daysAvailable = daysAvailable;
+        this.daysAvailable = new HashSet<>(daysAvailable);
     }
 }
